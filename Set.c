@@ -43,8 +43,9 @@ void add_node_to_tree(Set *s, Node* current, void *element){
         else
             current->left = new_node(element);
     }
-
-    return;
+    else{
+        exit(-1);
+    }
 }
 
 Set* set_add(Set *s, void *element){
@@ -58,6 +59,36 @@ Set* set_add(Set *s, void *element){
 }
 
 int set_contains(Set *s, void *element){
+    Node *current = s->root;
 
+    while(current){
+        if(s->compare(element, current->value) > 0){
+            current = current->right;
+        }
+        else if(s->compare(element, current->value) < 0){
+            current = current->left;
+        }
+        else{
+            return 1;
+        }
+    }
     return 0;
+}
+
+void imprimir_rama(Node* current){
+    printf("[%d]",*(int*)(current->value));
+    if(current->right){
+        imprimir_rama(current->right);
+    }
+    if(current->left){
+        imprimir_rama(current->left);
+    }
+}
+
+void imprimir(Set *s){
+    printf("[%d]",*(int*)(s->root->value));
+    Node *current_left = s->root->left;
+    Node *current_right = s->root->right;
+    imprimir_rama(current_right);
+    imprimir_rama(current_left);
 }
